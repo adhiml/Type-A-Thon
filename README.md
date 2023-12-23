@@ -1,8 +1,7 @@
 # Type-A-Thon
 Project Type-A-Thon Sem
 
-Manual
-Create your branch
+Manual to creating your branch
    
 a. Go to main.
 
