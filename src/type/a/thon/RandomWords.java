@@ -30,7 +30,18 @@ public class RandomWords {
         }
         
         Collections.shuffle(words);
-        Random h = new Random();
-        String pickWord = words.get(h.nextInt());
+    }
+    
+    public String pickRandomWords ()
+    {
+        if (!words.isEmpty())
+        {
+            Random j = new Random ();
+            return words.get(j.nextInt(words.size()));
+        }
+        else
+        {
+            return null;
+        }
     }
 }
