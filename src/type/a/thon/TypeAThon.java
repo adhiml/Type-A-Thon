@@ -5,6 +5,7 @@
 package type.a.thon;
 
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class TypeAThon {
@@ -34,11 +35,16 @@ public class TypeAThon {
             
             WPM.correctCounter(answer.charAt(i), text, i);
         }
-        
         System.out.println("");
-        
         WPM.overallMark();
         
+        try {
+            RandomWords j = new RandomWords();
+            System.out.println(j);
+        } catch (IOException error)
+        {
+            System.out.println("Error reading the file!");
+        }
     }
     
 }
