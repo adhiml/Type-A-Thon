@@ -12,7 +12,7 @@ public class WPM {
     
     
     static String text;
-    static int counter = 0;
+    static int counter1 = 0, counter2 = 0;
     static int y = 0;
     
     WPM (String text)
@@ -23,23 +23,23 @@ public class WPM {
     public static int overallCounter (String text)
     {
         
-        while (counter < text.length())
-            counter++;
+        while (counter2 < text.length())
+            counter2++;
         
-        return counter;
+        return counter2;
     }
     
     public static int correctCounter (char answer, String text, int i)
     {
         if ((answer == text.charAt(i)))
-            counter++;
+            counter1++;
         
-        return counter;
+        return counter1;
     }
     
     public static void overallMark ()
     {
-        
+        System.out.println(counter1 + "/" + counter2);
     }
 }
 
