@@ -13,7 +13,7 @@ public class WPM {
     
     static String text;
     static int counter = 0;
-    
+    static int y = 0;
     WPM (String text)
     {
         this.text = text;
