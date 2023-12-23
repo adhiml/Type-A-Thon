@@ -15,23 +15,29 @@ public class TypeAThon {
         
         String text = "It was VERY easy!";
         System.out.println(GFG.ANSI_PURPLE + text + GFG.ANSI_RESET);
-
+        WPM.overallCounter(text);
+        
+        
         System.out.print("Please type the answers back:");
         answer = g.nextLine();
         
         for (int i = 0; i < text.length(); i++)
         {
-            
             if(!checkText.check(answer.charAt(i), text, i))
+            {
                 System.out.print(GFG.ANSI_RED + answer.charAt(i) + GFG.ANSI_RESET);
+            }
             else
-                System.out.print(GFG.ANSI_GREEN + answer.charAt(i) + GFG.ANSI_RESET);   
+            {
+                System.out.print(GFG.ANSI_GREEN + answer.charAt(i) + GFG.ANSI_RESET); 
+            }
             
+            WPM.correctCounter(answer.charAt(i), text, i);
         }
         
         System.out.println("");
         
-        
+        WPM.overallMark();
         
     }
     
