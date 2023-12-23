@@ -39,11 +39,20 @@ public class TypeAThon {
         WPM.overallMark();
         
         try {
+            
             RandomWords j = new RandomWords();
-            System.out.println(j);
+            String randomWords = j.pickRandomWords();
+            
+            if (randomWords != null)
+            {
+                System.out.println("Randomly picked word:" + randomWords);
+            }
+            else {
+                System.out.println("No words available.");
+            }
         } catch (IOException error)
         {
-            System.out.println("Error reading the file!");
+            System.out.println("Error reading the file.");
         }
     }
     
