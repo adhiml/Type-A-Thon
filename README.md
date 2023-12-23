@@ -2,7 +2,7 @@
 Project Type-A-Thon Sem
 
 Manual
-1. Create your branch
+Create your branch
    
 a. Go to main.
 
@@ -16,3 +16,6 @@ c. Click new branch
 
 <img width="932" alt="image" src="https://github.com/adhiml/Type-A-Thon/assets/122215755/82e79227-af4a-4995-85f4-23a745a375f2">
 
+d. Fills in your name and your code scope (e.g - Maimunah - Main quiz)
+
+<img width="400" alt="image" src="https://github.com/adhiml/Type-A-Thon/assets/122215755/f07182d9-825a-49b6-b474-bfca9329b61f">
