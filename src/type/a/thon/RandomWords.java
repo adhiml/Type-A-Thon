@@ -16,12 +16,14 @@ import java.util.Scanner;
 
 public class RandomWords {
     
-    public List <String> words;
+    private List <String> words;
+    
+    private String fileName = "C:\\Users\\saada\\OneDrive\\Desktop\\Java\\FoP Tutorial\\Type-A-Thon\\randomWords.txt";
     
     public RandomWords () throws IOException {
         this.words = new ArrayList <> ();
         
-        try ( Scanner g = new Scanner (new File("FoP Tutorial\\Type-A-Thon\\randomWords.txt\"")))
+        try ( Scanner g = new Scanner (new File(fileName)))
         {
             while (g.hasNext())
             {
