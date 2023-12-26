@@ -73,15 +73,6 @@ public class CountdownTimer extends JFrame {
             }
         });
 
-        // Add KeyListener to the frame
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-                startCountdown();
-            }
-        });
-
         setTitle("Timer");
         setSize(400, 100);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

@@ -47,4 +47,40 @@ public class RandomWords {
         }
     }
     
+    public static String displayWords ()
+    {
+        String answer = "", texts = "";
+        
+        try {
+            
+            RandomWords j = new RandomWords();
+            StringBuilder d = new StringBuilder ();
+            
+            if (j != null)
+            {
+                    for (int r = 0; r < 10; r++)
+                    {
+                        d.append(j.pickRandomWords ()).append(" ");
+                    }
+                
+                texts = d.toString().trim();
+            }
+            else {
+                System.out.println("No words available.");
+            }
+        } catch (IOException error)
+        {
+            System.out.println("Error reading the file." + error.getMessage());  // .getMessage() gives you the error
+        }
+        
+        return texts;
+    }
+    
+    public static void main(String[] args) {
+    try {new RandomWords();
+        System.out.println(displayWords());
+    } catch (IOException error) {
+        System.out.println(error.getMessage());
+    }
+    }
 }

@@ -4,6 +4,8 @@
  */
 package type.a.thon;
 
+import java.awt.Color;
+
 
 public class Colors {
     
@@ -15,6 +17,9 @@ public class Colors {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
+    
+    public static final Color d = new Color(51,51,51);
+    public static final Color l = new Color(153,153,153);
     
     // background color
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";

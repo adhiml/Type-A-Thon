@@ -5,6 +5,7 @@
 package type.a.thon;
 
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.SwingUtilities;
@@ -40,9 +41,12 @@ public class TypeAThon {
         System.out.println(texts);
         WPM.overallCounter(texts);
         
-        
-        System.out.print("\nPlease type the answers:");
-        answer = g.nextLine();
+        int enter = KeyEvent.VK_ENTER;
+        while (enter == KeyEvent.VK_ENTER)
+        {
+            System.out.print("\nPlease type the answers:");
+            answer = g.nextLine();
+        }
         
         boolean nextLine = false;
         
@@ -58,6 +62,13 @@ public class TypeAThon {
             }
             
             WPM.correctCounter(answer.charAt(i), texts, i);
+            
+            // if user enters backspace
+            if (i > 0 && answer.charAt(i) == KeyEvent.VK_BACK_SPACE)
+            {
+                System.out.println("\b\b");
+                i -=2;
+            }
         }
 
         System.out.println("");

@@ -4,6 +4,8 @@
  */
 package type.a.thon;
 
+import java.awt.event.KeyEvent;
+
 /**
  *
  * @author saada
@@ -33,6 +35,9 @@ public class WPM {
     {
         if ((answer == text.charAt(i)))
             counter1++;
+        
+        if (i >= 0 && answer == KeyEvent.VK_BACK_SPACE)
+            counter1--;
         
         return counter1;
     }
