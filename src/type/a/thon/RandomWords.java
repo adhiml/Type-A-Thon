@@ -16,9 +16,9 @@ import java.util.Scanner;
 
 public class RandomWords {
     
-    private List <String> words;
+    private final List <String> words;
     
-    private String fileName = "C:\\Users\\saada\\OneDrive\\Desktop\\Java\\FoP Tutorial\\Type-A-Thon\\randomWords.txt";
+    private final String fileName = "C:\\Users\\saada\\OneDrive\\Desktop\\Java\\FoP Tutorial\\Type-A-Thon\\randomWords.txt";
     
     public RandomWords () throws IOException {
         this.words = new ArrayList <> ();
@@ -46,4 +46,5 @@ public class RandomWords {
             return null;
         }
     }
+    
 }

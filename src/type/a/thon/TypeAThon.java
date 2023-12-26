@@ -7,6 +7,7 @@ package type.a.thon;
 
 import java.io.IOException;
 import java.util.Scanner;
+import javax.swing.SwingUtilities;
 
 public class TypeAThon {
 
@@ -14,23 +15,16 @@ public class TypeAThon {
         Scanner g = new Scanner (System.in);
         String answer = "", texts = "";
         
-                try {
+        try {
             
             RandomWords j = new RandomWords();
-            
             StringBuilder d = new StringBuilder ();
             
             if (j != null)
             {
-                    for (int r = 0; r < 30; r++)
+                    for (int r = 0; r < 10; r++)
                     {
                         d.append(j.pickRandomWords ()).append(" ");
-                        
-                        // add a line break after every 7 words
-                        if ((r + 1) % 6 == 0)
-                        {
-                            d.append("\n");
-                        }
                     }
                 
                 texts = d.toString().trim();
@@ -42,22 +36,18 @@ public class TypeAThon {
         {
             System.out.println("Error reading the file." + error.getMessage());  // .getMessage() gives you the error
         }
-                
-
+        
         System.out.println(texts);
         WPM.overallCounter(texts);
         
         
-        System.out.print("\nPlease type the answers back:");
+        System.out.print("\nPlease type the answers:");
         answer = g.nextLine();
         
         boolean nextLine = false;
         
         for (int i = 0; i < texts.length(); i++)
         {
-            if (answer == "\n")
-                nextLine = true;
-            
             if(!checkText.check(answer.charAt(i), texts, i) && !nextLine)
             {
                 System.out.print(Colors.ANSI_RED + answer.charAt(i) + Colors.ANSI_RESET);
@@ -69,13 +59,19 @@ public class TypeAThon {
             
             WPM.correctCounter(answer.charAt(i), texts, i);
         }
+
         System.out.println("");
         WPM.overallMark();
+        System.out.printf("Accuracy:%.2f", WPM.accuracy());
+        System.out.print("% \n");
         
-
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                UI ui = new UI();
+                ui.setVisible(true);
+            }
         
-        Stopwatch timer = new Stopwatch ();
-        timer.start();
-    }
-    
+    });
 }
+}
+

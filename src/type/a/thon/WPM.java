@@ -41,5 +41,10 @@ public class WPM {
     {
         System.out.println(counter1 + "/" + counter2);
     }
+    
+    public static double accuracy ()
+    {
+        return (double) (counter1/counter2) * 100;
+    }
 }
 
