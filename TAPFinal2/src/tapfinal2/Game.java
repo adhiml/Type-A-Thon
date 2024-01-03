@@ -193,7 +193,7 @@ public class Game extends JFrame implements KeyListener{
     }
 
     
-    // When implementing an interface (KeyListener), we need to declared the 
+    // When implementing an interface (KeyListener), we need to declare
     // all of the methods whether used or not because it's part of the
     // "interface contract"
     
