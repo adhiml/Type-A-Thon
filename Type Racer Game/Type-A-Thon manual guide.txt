@@ -1,0 +1,19 @@
+Type-A-Thon manual guide:
+
+1. Main class
+
+-> TAPFinal2
+
+
+2. Directory Path that needed to be change
+
+
+For Player Folder
+
+-> FileManager Class -> String DATA_DIRECTORY
+
+-> Profile Class -> String DATA_DIRECTORY
+
+
+For randomtext text document
+-> RandomWordsGenerator Class -> String fileName
