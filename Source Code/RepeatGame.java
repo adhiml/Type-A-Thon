@@ -41,10 +41,9 @@ public class RepeatGame extends JFrame implements KeyListener{
     private static JLabel wpmLabel;
     private static JLabel countdownLabel;
     
-    private static RandomWordsGenerator g;
     private UserData userData;
     
-    public RepeatGame (Game game) throws IOException {
+    public RepeatGame () throws IOException {
     super("Type-A-Thon");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout (null);
@@ -57,8 +56,7 @@ public class RepeatGame extends JFrame implements KeyListener{
         userData = existingUserData;
     }
     
-    sameWordsList = game.sameWordsList;
-    
+        displayWords();
         ImageIcon image =new ImageIcon("racing2.jpg");
 
     
@@ -106,8 +104,11 @@ public class RepeatGame extends JFrame implements KeyListener{
         layer1.setBounds(0, 0, 680, 375);
         layer1.setBorder(BorderFactory.createMatteBorder(20, 20, 20, 25, image));
         
+    // Ensure wordLabel is properly initialized T_T
+    wordLabel = new JLabel();
+    add(wordLabel);
     
-    currentWord = updateWord();
+    currentWord = updateWordRepeat();
     wordLabel = new JLabel(currentWord);
         wordLabel.setFont(new Font("Courier New",Font.BOLD, 30));
         wordLabel.setForeground(Color.white);
@@ -214,7 +215,7 @@ public class RepeatGame extends JFrame implements KeyListener{
                 
                 if (currentWord.isEmpty()) {
                     updateScore();
-                    updateWord();
+                    updateWordRepeat();
                 }
                 
                 totalTypedCorrectly++;                                   // for the correctly typed chars      
@@ -273,11 +274,23 @@ public class RepeatGame extends JFrame implements KeyListener{
     
     public String currentWord;
     Random r = new Random();
-    private List<String> sameWordsList;
     
-    public String updateWord() {
-    if (!sameWordsList.isEmpty()) {
-        currentWord = sameWordsList.get(r.nextInt(sameWordsList.size()));
+    // cannot create new instance, if create one, "Words in Game are successfully loaded" is gonna be display    
+    List<String> wordsList = Game.sameWordsList;
+    
+    public void displayWords () {
+        
+        System.out.println("\nList of words that will be used: ");
+        for (String word : wordsList) {
+            System.out.println(word);
+        }
+    }
+    public String updateWordRepeat() {
+        
+    if (!wordsList.isEmpty()) {
+        
+        currentWord = wordsList.get(r.nextInt(wordsList.size()));
+        System.out.println("Words - Repeated Game: " + currentWord + "");
         OGWord = currentWord;
 
         if (wordLabel != null) {
@@ -287,7 +300,7 @@ public class RepeatGame extends JFrame implements KeyListener{
         }
     } else {
         // Handle the case when sameWordsList is empty
-        System.out.println("sameWordsList is empty");
+        System.out.println("wordsList is empty");
     }
 
     return currentWord;
