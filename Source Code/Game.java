@@ -4,33 +4,26 @@
  */
 package tapfinal2;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
+// files import
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+// timer import
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
-/**
- *
- * @author saada
- */
-public class RepeatGame extends JFrame implements KeyListener{
+//starting-as-soon-as-player-enter-input condition import
+import java.awt.event.KeyEvent;             // tells the program which key is pressed
+import java.awt.event.KeyListener;          // triggers the program to do a specific action when the key is pressed
+
+// aesthetic / GUI import
+import java.text.DecimalFormat;
+import javax.swing.*;           // buttons, windows, labels
+import java.awt.*;              // more basic GUI like colors, fonts etc
+import java.util.ArrayList;
+import java.util.List;
+
+public class Game extends JFrame implements KeyListener{
     
     private long startTime;  // for big as hell integers
     private long time = 30;
@@ -41,9 +34,10 @@ public class RepeatGame extends JFrame implements KeyListener{
     private static JLabel wpmLabel;
     private static JLabel countdownLabel;
     
+    private static RandomWordsGenerator g;
     private UserData userData;
     
-    public RepeatGame () throws IOException {
+    public Game () throws IOException {
     super("Type-A-Thon");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout (null);
@@ -56,11 +50,18 @@ public class RepeatGame extends JFrame implements KeyListener{
         userData = existingUserData;
     }
     
-        displayWords();
-        ImageIcon image =new ImageIcon("racing2.jpg");
-
+    try {
+            
+            g = new RandomWordsGenerator ();
+            
+            System.out.println("\nWords in Game are succesfully loaded");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     
-   countdownLabel = new JLabel("Time: " + time);
+    ImageIcon image =new ImageIcon("racing2.jpg");
+        
+        countdownLabel = new JLabel("Time: " + time);
         countdownLabel.setFont(new Font("Gill Sans Ultra Bold",Font.PLAIN, 15));
         countdownLabel.setForeground(new Color(0x881E36));
 
@@ -104,28 +105,20 @@ public class RepeatGame extends JFrame implements KeyListener{
         layer1.setBounds(0, 0, 680, 375);
         layer1.setBorder(BorderFactory.createMatteBorder(20, 20, 20, 25, image));
         
-    // Ensure wordLabel is properly initialized T_T
-    wordLabel = new JLabel();
-    add(wordLabel);
-    
-    currentWord = updateWordRepeat();
-    wordLabel = new JLabel(currentWord);
+
+        currentWord = g.displayRandomWords();
+        wordLabel = new JLabel(currentWord);
         wordLabel.setFont(new Font("Courier New",Font.BOLD, 30));
         wordLabel.setForeground(Color.white);
         wordLabel.setHorizontalAlignment(SwingConstants.CENTER);
         wordLabel.setBounds(50, 50, 300, 50);
 
-        
-    addKeyListener(this);                                       // to tell the frame to pay attention to the keys input
-    
-    setFocusable(true);                                   // programming the frame to be an active recipient
-                                                                  // input will be received without the user pressing "enter"
-    
-    setFocusTraversalKeysEnabled(false);       // allowing keys to not be used for navigation
-    
-    startGameTimer();
-    
-    setSize(700, 400);
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
+
+        startGameTimer();
+        setSize(700, 400);
         setLocationRelativeTo(null);
         setVisible(true);
         
@@ -149,7 +142,9 @@ public class RepeatGame extends JFrame implements KeyListener{
     
     } 
     
-    private Timer countdownTimer;
+
+    
+     private Timer countdownTimer;
     
     private void startCountdownTimer () {
         countdownTimer = new Timer ();
@@ -170,6 +165,9 @@ public class RepeatGame extends JFrame implements KeyListener{
                     countdownLabel.setText("Time's up!");
                     try {
                         endGame();
+                        String username = Profile.getUsername();
+                        saveScore scoreSaver = new saveScore(username);
+                        scoreSaver.saveScore();
                     } catch (IOException ex) {
                         System.out.println(ex.getMessage());
                     }
@@ -179,12 +177,26 @@ public class RepeatGame extends JFrame implements KeyListener{
             
         }, 0, 1000);
     }
-    
+
     private void endGame () throws IOException {
+        
+        
         TypingSession.updateUserData(Profile.username, userData, getWpm(), getAccuracy(),incorrectWords);
-        String username = Profile.getUsername();
-        saveScore scoreSaver = new saveScore(username);
-        scoreSaver.saveScore();
+        
+        System.out.println("List of words:");
+        for (String word : sameWordsList) {
+            System.out.println(word);
+        }
+        
+        int choice = JOptionPane.showConfirmDialog(
+                Game.this,
+                "Do you want to repeat the same texts?",
+                "Repeat",
+                JOptionPane.YES_NO_OPTION);
+        
+        if (choice == JOptionPane.YES_OPTION) {
+            new RepeatGame();
+        }
     }
     
     
@@ -203,28 +215,28 @@ public class RepeatGame extends JFrame implements KeyListener{
         
         if (time > 0) {
             
-        if (e.getKeyChar() == currentWord.charAt(0) || e.getKeyChar() != currentWord.charAt(0)) {
-            
-            if (e.getKeyChar() != currentWord.charAt(0)){
-                incorrectWords.add(OGWord);
-            }
-            else
-            {
-                currentWord = currentWord.substring(1);
-                wordLabel.setText(currentWord);              // updating characters
+            if (e.getKeyChar() == currentWord.charAt(0) || e.getKeyChar() != currentWord.charAt(0)) {
                 
-                if (currentWord.isEmpty()) {
-                    updateScore();
-                    updateWordRepeat();
+                if (e.getKeyChar() != currentWord.charAt(0)){
+                    incorrectWords.add(OGWord);
+                }
+                else
+                {
+                    currentWord = currentWord.substring(1);
+                    wordLabel.setText(currentWord);              // updating characters
+                    
+                    if (currentWord.isEmpty()) {
+                        updateScore();
+                        updateWord();
+                    }
+                    
+                    totalTypedCorrectly++;                                   // for the correctly typed chars
+                    updateAccuracy ();
                 }
                 
-                totalTypedCorrectly++;                                   // for the correctly typed chars      
-                updateAccuracy ();
+                totalTyped++;
             }
-            
-            totalTyped++;
-            }
-        } 
+        }
     }
     
     private void startGameTimer () {
@@ -249,23 +261,24 @@ public class RepeatGame extends JFrame implements KeyListener{
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - startTime;  // elapsed time = amount of times that had went by
         double minutes = (double) elapsedTime / 60000;              // had to divide by 60000 to change seconds into minutes
-        double wpm = score / minutes;                          // can change into int as well honestly
         
+        wpm = score / minutes;                          // can change into int as well honestly
+        
+//        wpm = score / 0.5;
         DecimalFormat df = new DecimalFormat("#.##");
         wpmLabel.setText("WPM: " + df.format(wpm));
     }
     
     
-    private static int score = 0;
+    private  int score = 0;
     
-    private static void updateScore() {
+    private  void updateScore() {
         score++;
         scoreLabel.setText("Score: " + score);
     }
     
-    
     private void updateAccuracy () {
-        double accuracy = (double) totalTypedCorrectly / totalTyped * 100;     // to get percentage
+        accuracy = (double) totalTypedCorrectly / totalTyped * 100;     // to get percentage
         DecimalFormat df = new DecimalFormat("#.##");
         
         accuracyLabel .setText("Accuracy: " + df.format(accuracy));
@@ -273,47 +286,32 @@ public class RepeatGame extends JFrame implements KeyListener{
     
     
     public String currentWord;
-    Random r = new Random();
+    public static List<String> sameWordsList = new ArrayList<>();
     
-    // cannot create new instance, if create one, "Words in Game are successfully loaded" is gonna be display    
-    List<String> wordsList = Game.sameWordsList;
-    
-    public void displayWords () {
+    public void updateWord () {
         
-        System.out.println("\nList of words that will be used: ");
-        for (String word : wordsList) {
-            System.out.println(word);
-        }
-    }
-    public String updateWordRepeat() {
+        currentWord = g.displayRandomWords();
+        System.out.println("Words - Game: " + currentWord);
+        OGWord = currentWord;               // for most miss-spelled words
         
-    if (!wordsList.isEmpty()) {
+        sameWordsList.add(currentWord);
+        System.out.println("Succesfully loaded: " + sameWordsList.get(sameWordsList.size() - 1) + "\n");
         
-        currentWord = wordsList.get(r.nextInt(wordsList.size()));
-        System.out.println("Words - Repeated Game: " + currentWord + "");
-        OGWord = currentWord;
-
         if (wordLabel != null) {
             wordLabel.setText(currentWord);
         } else {
-            System.out.println("wordLabel in updateWord is null");
+            System.out.println("wordLabel is null");
         }
-    } else {
-        // Handle the case when sameWordsList is empty
-        System.out.println("wordsList is empty");
     }
-
-    return currentWord;
-}
     
     
-    private static double wpm;
-    private static double accuracy;
+     public static double wpm;
+    public static double accuracy;
     
     public static double getWpm() {
         return wpm;
     }
-
+    
     public static double getAccuracy() {
         return accuracy;
     }
@@ -321,24 +319,24 @@ public class RepeatGame extends JFrame implements KeyListener{
     public String getCurrentWord() {
         return currentWord;
     }
-
+    
     public void setCurrentWord(String currentWord) {
         this.currentWord = currentWord;
     }
-
+    
     public JLabel getWordLabel() {
         return wordLabel;
     }
-
+    
     public JLabel getCountdownLabel() {
         return countdownLabel;
     }
-
+    
     public long getTime() {
         return time;
     }
     
-    // When implementing an interface (KeyListener), we need to declared the 
+    // When implementing an interface (KeyListener), we need to declared the
     // all of the methods whether used or not because it's part of the
     // "interface contract"
     
